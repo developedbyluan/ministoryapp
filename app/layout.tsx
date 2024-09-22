@@ -1,5 +1,7 @@
-import { Metadata } from "next"
 import React from "react"
+import { Metadata } from "next"
+import "@/assets/styles/globals.css"
+
 export const metadata: Metadata = {
     title: "Mini Story App",
     description: "This app is a great supplement for low beginning learners who want to learn English/Chinese/Spanish/Arabic deeply to increase vocabulary, comprehension with step by step transcriptions and AI assistant.",
