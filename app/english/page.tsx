@@ -62,6 +62,12 @@ export default function EnglishPage() {
     <div>
       <h1>English</h1>
       <h2>Course: Original English</h2>
+      <div>
+        <label>
+          Select Mp3
+          <input type="file" accept=".mp3" />
+        </label>
+      </div>
       <ul>
         <li>Lesson 0: The Race MS.mp3</li>
         <li>Lesson 1: Day of The Dead MS.mp3</li>
