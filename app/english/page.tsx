@@ -53,6 +53,11 @@ export default function EnglishPage() {
   return (
     <div>
       <h1>English</h1>
+      <h2>Course: Original English</h2>
+      <ul>
+        <li>Lesson 0: The Race MS.mp3</li>
+        <li>Lesson 1: Day of The Dead MS.mp3</li>
+      </ul>
       <Link href="/">Home</Link>
     </div>
   );
