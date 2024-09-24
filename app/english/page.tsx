@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 type LessonData = {
   id: string;
@@ -71,6 +72,7 @@ export const lessonsDatabase: LessonsDatabase = {
 };
 
 export default function EnglishPage() {
+  const router = useRouter();
 
   React.useEffect(() => {
     localStorage.setItem("preferredLanguage", "english");
@@ -85,17 +87,16 @@ export default function EnglishPage() {
     if (!file.name.endsWith(".mp3")) return;
 
     const lessonName = convertFileNameToLessonName(file.name);
-    console.log(lessonName);
     const lessonData = lessonsDatabase[lessonName];
 
     if (!lessonData) return;
 
-    navigateToLessonPage(lessonData);
+    navigateToLessonPage(lessonName);
   }
 
-  function navigateToLessonPage(lessonData: LessonData[]) {
-    console.log(lessonData);
-    console.log("router.push to page lesson");
+  function navigateToLessonPage(lessonName: string) {
+    console.log(lessonName);
+    router.push(`/english/lesson/${lessonName}`);
   }
 
   function convertFileNameToLessonName(fileName: string) {
