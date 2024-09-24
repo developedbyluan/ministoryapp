@@ -72,7 +72,6 @@ export const lessonsDatabase: LessonsDatabase = {
 };
 
 export default function EnglishPage() {
-  const [isLessonDataAvailable, setIsLessonDataAvailable] = React.useState(false);
   const router = useRouter();
 
   React.useEffect(() => {
@@ -94,7 +93,6 @@ export default function EnglishPage() {
     setTimeout(() => {
       const lessonData = lessonsDatabase[lessonName];
       if (!lessonData) return;
-      setIsLessonDataAvailable(true);
       navigateToLessonPage(lessonName);
     }, 5000);
   }
