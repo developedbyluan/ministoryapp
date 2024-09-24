@@ -58,6 +58,16 @@ export default function EnglishPage() {
   React.useEffect(() => {
     localStorage.setItem("preferredLanguage", "english");
   }, []);
+
+  function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+
+    // handle error
+    if (!file) return;
+
+    if (!file.name.endsWith(".mp3")) return;
+
+  }
   return (
     <div>
       <h1>English</h1>
@@ -65,7 +75,7 @@ export default function EnglishPage() {
       <div>
         <label>
           Select Mp3
-          <input type="file" accept=".mp3" />
+          <input type="file" accept=".mp3" onChange={handleFileChange} />
         </label>
       </div>
       <ul>
