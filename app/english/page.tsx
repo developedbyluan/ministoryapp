@@ -3,6 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useMP3 } from "@/app/english/contexts/MP3Context";
 
 export type LessonData = {
   id: string;
@@ -73,6 +74,7 @@ const lessonsDatabase: LessonsDatabase = {
 
 export default function EnglishPage() {
   const router = useRouter();
+  const { setMp3file } = useMP3();
 
   React.useEffect(() => {
     localStorage.setItem("preferredLanguage", "english");
@@ -94,6 +96,7 @@ export default function EnglishPage() {
       const lessonData = lessonsDatabase[lessonName];
       if (!lessonData) return;
       localStorage.setItem(lessonName, JSON.stringify(lessonData));
+      setMp3file(file);
       console.log("going to lesson page in 3 seconds");
       setTimeout(() => {  
         navigateToLessonPage(lessonName);
