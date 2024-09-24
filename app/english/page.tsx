@@ -85,6 +85,8 @@ export default function EnglishPage() {
 
     const lessonData = lessonsDatabase[file.name];
 
+    if (!lessonData) return;
+
     navigateToLessonPage(lessonData);
   }
 
