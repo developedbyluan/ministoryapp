@@ -67,6 +67,14 @@ export default function EnglishPage() {
 
     if (!file.name.endsWith(".mp3")) return;
 
+    navigateToLesson(lessonData, file.name);
+  }
+
+  function navigateToLesson(lessonData: any, fileName: string) {
+    // handle router push to page lesson
+    const lesson = lessonData[fileName];
+    console.log(lesson);
+    console.log("router.push to page lesson");
   }
   return (
     <div>
