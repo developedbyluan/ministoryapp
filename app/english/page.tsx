@@ -4,7 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-type LessonData = {
+export type LessonData = {
   id: string;
   text: string;
   ipa: string;
@@ -20,7 +20,7 @@ type LessonsDatabase = {
   [key: string]: LessonData[];
 };
 
-export const lessonsDatabase: LessonsDatabase = {
+const lessonsDatabase: LessonsDatabase = {
   "the-race-ms": [
     {
       id: "1",
