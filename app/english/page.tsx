@@ -84,7 +84,9 @@ export default function EnglishPage() {
 
     if (!file.name.endsWith(".mp3")) return;
 
-    const lessonData = lessonsDatabase[file.name];
+    const lessonName = convertFileNameToLessonName(file.name);
+    console.log(lessonName);
+    const lessonData = lessonsDatabase[lessonName];
 
     if (!lessonData) return;
 
@@ -95,6 +97,11 @@ export default function EnglishPage() {
     console.log(lessonData);
     console.log("router.push to page lesson");
   }
+
+  function convertFileNameToLessonName(fileName: string) {
+    return fileName.toLowerCase().split(".")[0].replace(/ /g, "-");
+  }
+
   return (
     <div>
       <h1>English</h1>
