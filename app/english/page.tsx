@@ -87,11 +87,14 @@ export default function EnglishPage() {
     if (!file.name.endsWith(".mp3")) return;
 
     const lessonName = convertFileNameToLessonName(file.name);
-    const lessonData = lessonsDatabase[lessonName];
 
-    if (!lessonData) return;
-
-    navigateToLessonPage(lessonName);
+    // handle download lesson data from database
+    // simulating a long process
+    setTimeout(() => {
+      const lessonData = lessonsDatabase[lessonName];
+      if (!lessonData) return;
+      navigateToLessonPage(lessonName);
+    }, 5000);
   }
 
   function navigateToLessonPage(lessonName: string) {
