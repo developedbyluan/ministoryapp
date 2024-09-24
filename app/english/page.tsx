@@ -93,7 +93,11 @@ export default function EnglishPage() {
     setTimeout(() => {
       const lessonData = lessonsDatabase[lessonName];
       if (!lessonData) return;
-      navigateToLessonPage(lessonName);
+      localStorage.setItem(lessonName, JSON.stringify(lessonData));
+      console.log("going to lesson page in 3 seconds");
+      setTimeout(() => {  
+        navigateToLessonPage(lessonName);
+      }, 3000);
     }, 5000);
   }
 
