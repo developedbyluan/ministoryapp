@@ -20,7 +20,7 @@ type LessonsDatabase = {
 };
 
 export const lessonsDatabase: LessonsDatabase = {
-  "The Race MS.mp3": [
+  "the-race-ms": [
     {
       id: "1",
       text: "Hello, welcome to the mini-story for The Race. Let’s get started.",
