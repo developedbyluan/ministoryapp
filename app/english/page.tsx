@@ -3,8 +3,24 @@
 import React from "react";
 import Link from "next/link";
 
+type LessonData = {
+  id: string;
+  text: string;
+  ipa: string;
+  translation: string;
+  start: number;
+  end: number;
+  type: string;
+  img: string;
+  alt: string;
+};
+
+type LessonsDatabase = {
+  [key: string]: LessonData[];
+};
+
 export default function EnglishPage() {
-  const lessonData = {
+  const lessonsDatabase: LessonsDatabase = {
     "The Race MS.mp3": [
       {
         id: "1",
@@ -67,13 +83,13 @@ export default function EnglishPage() {
 
     if (!file.name.endsWith(".mp3")) return;
 
-    navigateToLesson(lessonData, file.name);
+    const lessonData = lessonsDatabase[file.name];
+
+    navigateToLessonPage(lessonData);
   }
 
-  function navigateToLesson(lessonData: any, fileName: string) {
-    // handle router push to page lesson
-    const lesson = lessonData[fileName];
-    console.log(lesson);
+  function navigateToLessonPage(lessonData: LessonData[]) {
+    console.log(lessonData);
     console.log("router.push to page lesson");
   }
   return (
