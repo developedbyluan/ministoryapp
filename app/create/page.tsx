@@ -13,6 +13,7 @@ export default function TranscriptionEditorPage() {
 
   const [isLogging, setIsLogging] = React.useState(false);
   const [isReplaying, setIsReplaying] = React.useState(false);
+  const [isSynced, setIsSynced] = React.useState(false);
 
   const [timestamps, setTimestamps] = React.useState<number[]>([]);
 
@@ -123,9 +124,9 @@ export default function TranscriptionEditorPage() {
 
   function syncTranscriptions() {
     setBlocks(blocks.filter((block) => !transcriptions.includes(block)));
+    setIsSynced(true);
 
     if (audioRef.current && timestamps.length > 0) {
-      console.log(timestamps.at(-1));
       audioRef.current!.currentTime = timestamps.at(-1) || 0;
     }
   }
@@ -153,7 +154,7 @@ export default function TranscriptionEditorPage() {
             <>
               <Button
                 onClick={() => removeLine(index)}
-                disabled={isLogging || isReplaying}
+                disabled={isLogging || isReplaying || !isSynced}
               >
                 Remove
               </Button>
@@ -161,7 +162,7 @@ export default function TranscriptionEditorPage() {
                 onClick={() =>
                   replayLine(timestamps[index - 1] || 0, timestamps[index] || 0)
                 }
-                disabled={isLogging || isReplaying}
+                disabled={isLogging || isReplaying || !isSynced}
               >
                 Replay
               </Button>
@@ -192,7 +193,10 @@ export default function TranscriptionEditorPage() {
         <p className="text-sm text-muted-foreground">
           {translation}{" "}
           {index === 0 && (
-            <Button onClick={() => logLine(index)} disabled={isReplaying}>
+            <Button
+              onClick={() => logLine(index)}
+              disabled={isReplaying || !isSynced}
+            >
               {isLogging ? "Log" : "Play"}
             </Button>
           )}
@@ -208,7 +212,9 @@ export default function TranscriptionEditorPage() {
         {transcriptionElements}
       </div>
       <div className="fixed top-4 right-4">
-        <Button onClick={syncTranscriptions}>Sync</Button>
+        <Button onClick={syncTranscriptions} disabled={isSynced}>
+          Sync
+        </Button>
       </div>
       <div>
         <Input type="file" accept=".mp3" onChange={handleMP3Upload} />
