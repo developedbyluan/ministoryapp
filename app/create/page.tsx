@@ -62,8 +62,13 @@ export default function TranscriptionEditorPage() {
 
   function handleMP3Upload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
-    if (file) {
-      setAudioFile(file);
+    if (!file) return;
+    setAudioFile(file);
+    const localTimestamps = JSON.parse(
+      localStorage.getItem("timestamps") || "[]"
+    );
+    if (localTimestamps && localTimestamps.length > 0) {
+      setTimestamps(localTimestamps);
     }
   }
 
@@ -96,6 +101,11 @@ export default function TranscriptionEditorPage() {
 
   function syncTranscriptions() {
     setBlocks(blocks.filter((block) => !transcriptions.includes(block)));
+
+    if (audioRef.current && timestamps.length > 0) {
+      console.log(timestamps.at(-1));
+      audioRef.current!.currentTime = timestamps.at(-1) || 0;
+    }
   }
 
   const transcriptionElements = transcriptions.map((transcription, index) => {
