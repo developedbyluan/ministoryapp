@@ -12,6 +12,7 @@ export default function TranscriptionEditorPage() {
   const [audioUrl, setAudioUrl] = React.useState<string | null>(null);
 
   const [isLogging, setIsLogging] = React.useState(false);
+  const [isReplaying, setIsReplaying] = React.useState(false);
 
   const [timestamps, setTimestamps] = React.useState<number[]>([]);
 
@@ -100,6 +101,19 @@ export default function TranscriptionEditorPage() {
     setIsLogging(false);
   }
 
+  function replayLine(start: number, end: number) {
+    if (!audioRef.current) return;
+    setIsReplaying(true);
+    audioRef.current.currentTime = start;
+    audioRef.current.play();
+    const timeout = (end - start) * 1000;
+    setTimeout(() => {
+      audioRef.current?.pause();
+      audioRef.current!.currentTime = end;
+      setIsReplaying(false);
+    }, timeout);
+  }
+
   function logLine(index: number) {
     playPauseAudio();
     if (!isLogging) {
@@ -149,15 +163,15 @@ export default function TranscriptionEditorPage() {
           {translation}
           {index === transcriptions.length - 1 && (
             <>
-              <Button onClick={() => removeLine(index)} disabled={isLogging}>
+              <Button
+                onClick={() => removeLine(index)}
+                disabled={isLogging || isReplaying}
+              >
                 Remove
               </Button>
               <Button
                 onClick={() =>
-                  playAudioInRange(
-                    timestamps[index - 1] || 0,
-                    timestamps[index] || 0
-                  )
+                  replayLine(timestamps[index - 1] || 0, timestamps[index] || 0)
                 }
                 disabled={isLogging}
               >
@@ -190,7 +204,7 @@ export default function TranscriptionEditorPage() {
         <p className="text-sm text-muted-foreground">
           {translation}{" "}
           {index === 0 && (
-            <Button onClick={() => logLine(index)}>
+            <Button onClick={() => logLine(index)} disabled={isReplaying}>
               {isLogging ? "Log" : "Play"}
             </Button>
           )}
