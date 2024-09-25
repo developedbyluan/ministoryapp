@@ -9,6 +9,21 @@ export default function TranscriptionEditorPage() {
   const [blocks, setBlocks] = React.useState<string[]>([]);
   const [transcriptions, setTranscriptions] = React.useState<string[]>([]);
 
+  React.useEffect(() => {
+    const result: {
+      text: string;
+      ipa: string;
+      transcription: string;
+    }[] = [];
+
+    transcriptions.forEach((item) => {
+      const [text, ipa, transcription] = item.split("\n");
+      result.push({ text, ipa, transcription });
+    });
+    console.log(result);
+    localStorage.setItem("transcriptions", JSON.stringify(result));
+  }, [transcriptions]);
+
   function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (file) {
@@ -22,11 +37,11 @@ export default function TranscriptionEditorPage() {
 
       reader.readAsText(file);
     }
+
   }
 
   function logLine(index: number) {
     setTranscriptions((prev) => [...prev, blocks[index]]);
-    console.log(index);
     setBlocks((prev) => prev.filter((_, i) => i !== index));
   }
 
@@ -75,7 +90,9 @@ export default function TranscriptionEditorPage() {
       <div className="flex flex-col gap-7 items-start py-7">
         {transcriptionElements}
       </div>
-      <div className="flex flex-col gap-7 items-start py-7">{blockElements}</div>
+      <div className="flex flex-col gap-7 items-start py-7">
+        {blockElements}
+      </div>
     </div>
   );
 }
