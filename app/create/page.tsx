@@ -36,11 +36,11 @@ export default function TranscriptionEditorPage() {
   }
 
   return (
-    <div className="flex flex-col gap-7 items-center p-4">
+    <div className="flex flex-col gap-7 items-start p-4">
       <Input type="file" accept=".txt" onChange={handleFileUpload} />
       <div className="flex flex-col gap-7 items-start py-7">
         {transcriptions.map((transcription, index) => (
-          <div key={crypto.randomUUID()} className="flex items-center">
+          <div key={crypto.randomUUID()}>
             <p>{transcription}</p>
             {index === transcriptions.length - 1 && (
               <Button onClick={() => removeLine(index)}>Remove</Button>
@@ -50,7 +50,7 @@ export default function TranscriptionEditorPage() {
       </div>
       <div className="flex flex-col gap-7 items-start py-7">
         {blocks.map((block, index) => (
-          <div key={crypto.randomUUID()} className="flex items-center">
+          <div key={crypto.randomUUID()}>
             <p>{block}</p>
             {index === 0 && <Button onClick={() => logLine(index)}>Log</Button>}
           </div>
