@@ -11,6 +11,8 @@ export default function TranscriptionEditorPage() {
   const [audioFile, setAudioFile] = React.useState<File | null>(null);
   const [audioUrl, setAudioUrl] = React.useState<string | null>(null);
 
+  const [isLogging, setIsLogging] = React.useState(false);
+
   const audioRef = React.useRef<HTMLAudioElement | null>(null);
 
   React.useEffect(() => {
@@ -68,8 +70,13 @@ export default function TranscriptionEditorPage() {
 
   function logLine(index: number) {
     playPauseAudio();
+    if (!isLogging) {
+      setIsLogging(true);
+      return;
+    }
     setTranscriptions((prev) => [...prev, blocks[index]]);
     setBlocks((prev) => prev.filter((_, i) => i !== index));
+    setIsLogging(false);
   }
 
   function removeLine(index: number) {
@@ -127,7 +134,11 @@ export default function TranscriptionEditorPage() {
         <div className="flex flex-wrap gap-x-4">{lineElements}</div>
         <p className="text-sm text-muted-foreground">
           {translation}{" "}
-          {index === 0 && <Button onClick={() => logLine(index)}>Log</Button>}
+          {index === 0 && (
+            <Button onClick={() => logLine(index)}>
+              {isLogging ? "Log" : "Play"}
+            </Button>
+          )}
         </p>
       </div>
     );
