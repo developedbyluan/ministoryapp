@@ -11,6 +11,8 @@ export default function TranscriptionEditorPage() {
   const [audioFile, setAudioFile] = React.useState<File | null>(null);
   const [audioUrl, setAudioUrl] = React.useState<string | null>(null);
 
+  const audioRef = React.useRef<HTMLAudioElement | null>(null);
+
   React.useEffect(() => {
     if (transcriptions.length <= 0) return;
     localStorage.setItem("transcriptions", JSON.stringify(transcriptions));
@@ -55,7 +57,17 @@ export default function TranscriptionEditorPage() {
     }
   }
 
+  function playPauseAudio() {
+    if (!audioRef.current) return;
+    if (audioRef.current.paused) {
+      audioRef.current.play();
+    } else {
+      audioRef.current.pause();
+    }
+  }
+
   function logLine(index: number) {
+    playPauseAudio();
     setTranscriptions((prev) => [...prev, blocks[index]]);
     setBlocks((prev) => prev.filter((_, i) => i !== index));
   }
@@ -132,7 +144,7 @@ export default function TranscriptionEditorPage() {
       </div>
       <div>
         <Input type="file" accept=".mp3" onChange={handleMP3Upload} />
-        {audioUrl && <audio src={audioUrl} controls />}
+        {audioUrl && <audio ref={audioRef} src={audioUrl} controls />}
       </div>
       <div className="flex flex-col gap-7 items-start py-7">
         {blockElements}
