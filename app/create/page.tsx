@@ -206,7 +206,7 @@ export default function TranscriptionEditorPage() {
             </div>
           )}
         </p>
-        <span className="text-xs bg-neutral-900 text-neutral-50 p-1 rounded"> 
+        <span className="text-xs bg-neutral-900/20 text-neutral-50 p-1 rounded"> 
           {timestamps[index]}
         </span>
       </div>
