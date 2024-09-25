@@ -4,8 +4,10 @@ import React from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useToast } from "@/hooks/use-toast";
 
 export default function TranscriptionEditorPage() {
+  const { toast } = useToast();
   const [blocks, setBlocks] = React.useState<string[]>([]);
   const [transcriptions, setTranscriptions] = React.useState<string[]>([]);
   const [audioFile, setAudioFile] = React.useState<File | null>(null);
@@ -79,6 +81,10 @@ export default function TranscriptionEditorPage() {
     const file = e.target.files?.[0];
     if (!file) return;
     setAudioFile(file);
+    toast({
+      description: "MP3 file uploaded successfully",
+      duration: 3000,
+    });
     const localTimestamps = JSON.parse(
       localStorage.getItem("timestamps") || "[]"
     );
