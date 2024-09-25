@@ -211,11 +211,20 @@ export default function TranscriptionEditorPage() {
       <div className="flex flex-col gap-7 items-start py-7">
         {transcriptionElements}
       </div>
-      <div className="fixed top-4 right-4">
-        <Button onClick={syncTranscriptions} disabled={isSynced}>
-          Sync
-        </Button>
-      </div>
+      {blocks.length > 0 && audioFile && (
+        <div
+          style={{ display: isSynced ? "none" : "flex" }}
+          className="fixed top-0 left-0 w-full h-screen flex justify-center items-center bg-neutral-600/90 z-50"
+        >
+          <Button
+            onClick={syncTranscriptions}
+            disabled={isSynced}
+            className="text-2xl"
+          >
+            Sync
+          </Button>
+        </div>
+      )}
       <div>
         <Input type="file" accept=".mp3" onChange={handleMP3Upload} />
         {audioUrl && <audio ref={audioRef} src={audioUrl} controls />}
