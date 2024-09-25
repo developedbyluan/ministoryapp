@@ -103,6 +103,7 @@ export default function TranscriptionEditorPage() {
 
   function replayLine(start: number, end: number) {
     if (!audioRef.current) return;
+    resetPlaybackRate();
     setIsReplaying(true);
     audioRef.current.currentTime = start;
     audioRef.current.play();
@@ -154,6 +155,12 @@ export default function TranscriptionEditorPage() {
 
     setPlaybackRate(newRate);
   }
+
+  function resetPlaybackRate() {
+    if (!audioRef.current) return;
+    audioRef.current.playbackRate = 1;
+    setPlaybackRate(1);
+  } 
 
   const transcriptionElements = transcriptions.map((transcription, index) => {
     const [text, ipa, translation] = transcription.split("\n");
