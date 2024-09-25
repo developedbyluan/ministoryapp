@@ -185,10 +185,10 @@ export default function TranscriptionEditorPage() {
     return (
       <div key={crypto.randomUUID()} ref={refCallback}>
         <div className="flex flex-wrap gap-x-4">{lineElements}</div>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-sm text-muted-foreground flex gap-7"> 
           {translation}
           {index === transcriptions.length - 1 && (
-            <>
+            <div className="flex gap-7">
               <Button
                 onClick={() => removeLine(index)}
                 disabled={isLogging || isReplaying || !isSynced}
@@ -203,7 +203,7 @@ export default function TranscriptionEditorPage() {
               >
                 Replay
               </Button>
-            </>
+            </div>
           )}
         </p>
         <span className="text-xs bg-neutral-900 text-neutral-50 p-1 rounded"> 
@@ -230,23 +230,23 @@ export default function TranscriptionEditorPage() {
     return (
       <div key={crypto.randomUUID()}>
         <div className="flex flex-wrap gap-x-4">{lineElements}</div>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-sm text-muted-foreground flex gap-7">
           {translation}{" "}
           {index === 0 && (
-            <>
-              <Button
-                onClick={() => logLine(index)}
-                disabled={isReplaying || !isSynced}
-              >
-                {isLogging ? "Log" : "Play"}
-              </Button>
+            <div className="flex gap-7">
               <Button
                 onClick={handlePlaybackRateChange}
                 disabled={isReplaying || !isSynced || isLogging}
               >
                 {playbackRate}x
               </Button>
-            </>
+              <Button
+                onClick={() => logLine(index)}
+                disabled={isReplaying || !isSynced}
+              >
+                {isLogging ? "Log" : "Play"}
+              </Button>
+            </div>
           )}
         </p>
       </div>
