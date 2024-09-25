@@ -195,29 +195,30 @@ export default function TranscriptionEditorPage() {
         <div className="flex flex-wrap gap-x-4">{lineElements}</div>
         <div className="text-sm text-muted-foreground flex gap-7">
           {translation}
-          {index === transcriptions.length - 1 && (
-            <div className="flex gap-7">
-              <Button
-                onClick={() => removeLine(index)}
-                disabled={isLogging || isReplaying || !isSynced}
-              >
-                Remove
-              </Button>
-              <Button
-                onClick={() =>
-                  replayLine(timestamps[index - 1] || 0, timestamps[index] || 0)
-                }
-                disabled={isLogging || isReplaying || !isSynced}
-              >
-                Replay
-              </Button>
-            </div>
-          )}
         </div>
         {timestamps.length > 0 && (
           <span className="text-xs bg-neutral-900/20 text-neutral-50 p-1 rounded">
             {timestamps[index]}
           </span>
+        )}
+
+        {index === transcriptions.length - 1 && (
+          <div className="flex gap-7 mt-2">
+            <Button
+              onClick={() => removeLine(index)}
+              disabled={isLogging || isReplaying || !isSynced}
+            >
+              Remove
+            </Button>
+            <Button
+              onClick={() =>
+                replayLine(timestamps[index - 1] || 0, timestamps[index] || 0)
+              }
+              disabled={isLogging || isReplaying || !isSynced}
+            >
+              Replay
+            </Button>
+          </div>
         )}
       </div>
     );
@@ -241,24 +242,24 @@ export default function TranscriptionEditorPage() {
       <div key={crypto.randomUUID()}>
         <div className="flex flex-wrap gap-x-4">{lineElements}</div>
         <div className="text-sm text-muted-foreground flex gap-7">
-          {translation}{" "}
-          {index === 0 && (
-            <div className="flex gap-7">
-              <Button
-                onClick={handlePlaybackRateChange}
-                disabled={isReplaying || !isSynced || isLogging}
-              >
-                {playbackRate}x
-              </Button>
-              <Button
-                onClick={() => logLine(index)}
-                disabled={isReplaying || !isSynced}
-              >
-                {isLogging ? "Log" : "Play"}
-              </Button>
-            </div>
-          )}
+          {translation}
         </div>
+        {index === 0 && (
+          <div className="flex gap-7 mt-2">
+            <Button
+              onClick={handlePlaybackRateChange}
+              disabled={isReplaying || !isSynced || isLogging}
+            >
+              {playbackRate}x
+            </Button>
+            <Button
+              onClick={() => logLine(index)}
+              disabled={isReplaying || !isSynced}
+            >
+              {isLogging ? "Log" : "Play"}
+            </Button>
+          </div>
+        )}
       </div>
     );
   });
