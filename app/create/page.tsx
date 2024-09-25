@@ -86,13 +86,11 @@ export default function TranscriptionEditorPage() {
     <div className="flex flex-col gap-7 items-start p-4">
       <Input type="file" accept=".txt" onChange={handleFileUpload} />
       <Button onClick={syncTranscriptions}>Sync</Button>
-      <div className="flex gap-4">
-        <div className="flex flex-col gap-7 items-start py-7 w-full">
-          {transcriptionElements}
-        </div>
-        <div className="flex flex-col gap-7 items-start py-7 w-full">
-          {blockElements}
-        </div>
+      <div className="flex flex-col gap-7 items-start py-7">
+        {transcriptionElements}
+      </div>
+      <div className="flex flex-col gap-7 items-start py-7">
+        {blockElements}
       </div>
     </div>
   );
