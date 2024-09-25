@@ -19,7 +19,7 @@ export default function TranscriptionEditorPage() {
   const [timestamps, setTimestamps] = React.useState<number[]>([]);
 
   const audioRef = React.useRef<HTMLAudioElement | null>(null);
-  const firstElementOfBlocksRef = React.useRef<HTMLDivElement | null>(null);
+  const lastElementOfTranscriptions = React.useRef<HTMLDivElement | null>(null);
 
   React.useEffect(() => {
     if (transcriptions.length <= 0) return;
@@ -46,9 +46,9 @@ export default function TranscriptionEditorPage() {
   }, [timestamps]);
 
   React.useEffect(() => {
-    if (!firstElementOfBlocksRef.current) return;
+    if (!lastElementOfTranscriptions.current) return;
     if (!isSynced) return;
-    firstElementOfBlocksRef.current.scrollIntoView({
+    lastElementOfTranscriptions.current.scrollIntoView({
       behavior: "smooth",
       block: "start",
     });
@@ -176,8 +176,14 @@ export default function TranscriptionEditorPage() {
       );
     });
 
+    const refCallback = (el: HTMLDivElement) => {
+      if (index >= transcriptions.length - 1) {
+        lastElementOfTranscriptions.current = el;
+      }
+    };
+
     return (
-      <div key={crypto.randomUUID()}>
+      <div key={crypto.randomUUID()} ref={refCallback}>
         <div className="flex flex-wrap gap-x-4">{lineElements}</div>
         <p className="text-sm text-muted-foreground">
           {translation}
@@ -210,16 +216,10 @@ export default function TranscriptionEditorPage() {
     const textArray = text.split(" ");
 
     const lineElements = ipaArray.map((ipa, index) => {
-      function refCallback(el: HTMLDivElement) {
-        if (index === 0) {
-          firstElementOfBlocksRef.current = el;
-        }
-      }
       return (
         <div
           className="flex flex-col text-center"
           key={crypto.randomUUID()}
-          ref={refCallback}
         >
           <p className="text-sm text-muted-foreground">{ipa}</p>
           <p className="text-xl">{textArray[index]}</p>
