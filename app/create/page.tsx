@@ -25,9 +25,14 @@ export default function TranscriptionEditorPage() {
   }
 
   function logLine(index: number) {
-    const lines = blocks[index].split("\n");
-    setTranscriptions((prev) => [...prev, lines[0]]);
+    setTranscriptions((prev) => [...prev, blocks[index]]);
+    console.log(index);
     setBlocks((prev) => prev.filter((_, i) => i !== index));
+  }
+
+  function removeLine(index: number) {
+    setTranscriptions((prev) => prev.filter((_, i) => i !== index));
+    setBlocks((prev) => [...prev, blocks[index]]);
   }
 
   return (
@@ -35,7 +40,12 @@ export default function TranscriptionEditorPage() {
       <Input type="file" accept=".txt" onChange={handleFileUpload} />
       <div className="flex flex-col gap-7 items-start py-7">
         {transcriptions.map((transcription, index) => (
-          <p key={crypto.randomUUID()}>{transcription}</p>
+          <div key={crypto.randomUUID()} className="flex items-center">
+            <p>{transcription}</p>
+            {index === transcriptions.length - 1 && (
+              <Button onClick={() => removeLine(index)}>Remove</Button>
+            )}
+          </div>
         ))}
       </div>
       <div className="flex flex-col gap-7 items-start py-7">
