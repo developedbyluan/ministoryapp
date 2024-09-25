@@ -35,27 +35,47 @@ export default function TranscriptionEditorPage() {
     setBlocks((prev) => [transcriptions[index], ...prev]);
   }
 
+  const transcriptionElements = transcriptions.map((transcription, index) => {
+    return (
+      <div key={crypto.randomUUID()}>
+        <p>{transcription}</p>
+        {index === transcriptions.length - 1 && (
+          <Button onClick={() => removeLine(index)}>Remove</Button>
+        )}
+      </div>
+    );
+  });
+
+  const blockElements = blocks.map((block, index) => {
+    const [text, ipa, translation] = block.split("\n");
+    const ipaArray = ipa.split(" ");
+    const textArray = text.split(" ");
+
+    const lineElements = ipaArray.map((ipa, index) => {
+      return (
+        <div className="flex flex-col text-center" key={crypto.randomUUID()}>
+          <p className="text-sm text-muted-foreground">{ipa}</p>
+          <p className="text-xl">{textArray[index]}</p>
+        </div>
+      );
+    });
+
+    return (
+      <div key={crypto.randomUUID()}>
+        <div className="flex flex-wrap gap-x-4">{lineElements}</div>
+        <p className="text-sm text-muted-foreground">{translation}</p>
+        {index === 0 && <Button onClick={() => logLine(index)}>Log</Button>}
+      </div>
+    );
+  });
+
   return (
     <div className="flex flex-col gap-7 items-start p-4">
       <Input type="file" accept=".txt" onChange={handleFileUpload} />
       <div className="flex flex-col gap-7 items-start py-7">
-        {transcriptions.map((transcription, index) => (
-          <div key={crypto.randomUUID()}>
-            <p>{transcription}</p>
-            {index === transcriptions.length - 1 && (
-              <Button onClick={() => removeLine(index)}>Remove</Button>
-            )}
-          </div>
-        ))}
+        {transcriptionElements}
       </div>
-      <div className="flex flex-col gap-7 items-start py-7">
-        {blocks.map((block, index) => (
-          <div key={crypto.randomUUID()}>
-            <p>{block}</p>
-            {index === 0 && <Button onClick={() => logLine(index)}>Log</Button>}
-          </div>
-        ))}
-      </div>
+      <div className="flex flex-col gap-7 items-start py-7">{blockElements}</div>
     </div>
   );
 }
