@@ -14,12 +14,12 @@ export default function TranscriptionEditorPage() {
   const [isLogging, setIsLogging] = React.useState(false);
   const [isReplaying, setIsReplaying] = React.useState(false);
   const [isSynced, setIsSynced] = React.useState(false);
+  const [playbackRate, setPlaybackRate] = React.useState(1);
 
   const [timestamps, setTimestamps] = React.useState<number[]>([]);
 
   const audioRef = React.useRef<HTMLAudioElement | null>(null);
   const firstElementOfBlocksRef = React.useRef<HTMLDivElement | null>(null);
-
 
   React.useEffect(() => {
     if (transcriptions.length <= 0) return;
@@ -47,7 +47,7 @@ export default function TranscriptionEditorPage() {
 
   React.useEffect(() => {
     if (!firstElementOfBlocksRef.current) return;
-    if (!isSynced) return
+    if (!isSynced) return;
     firstElementOfBlocksRef.current.scrollIntoView({
       behavior: "smooth",
       block: "start",
@@ -146,6 +146,15 @@ export default function TranscriptionEditorPage() {
     window.location.reload();
   }
 
+  function handlePlaybackRateChange(){
+    if (!audioRef.current) return;
+
+    const newRate = playbackRate > 1.25 ? 0.75 : playbackRate + 0.25;
+    audioRef.current.playbackRate = newRate;
+
+    setPlaybackRate(newRate);
+  }
+
   const transcriptionElements = transcriptions.map((transcription, index) => {
     const [text, ipa, translation] = transcription.split("\n");
     const ipaArray = ipa.split(" ");
@@ -217,12 +226,20 @@ export default function TranscriptionEditorPage() {
         <p className="text-sm text-muted-foreground">
           {translation}{" "}
           {index === 0 && (
-            <Button
-              onClick={() => logLine(index)}
-              disabled={isReplaying || !isSynced}
-            >
-              {isLogging ? "Log" : "Play"}
-            </Button>
+            <>
+              <Button
+                onClick={() => logLine(index)}
+                disabled={isReplaying || !isSynced}
+              >
+                {isLogging ? "Log" : "Play"}
+              </Button>
+              <Button
+                onClick={handlePlaybackRateChange}
+                disabled={isReplaying || !isSynced || isLogging}
+              >
+                {playbackRate}x
+              </Button>
+            </>
           )}
         </p>
       </div>
