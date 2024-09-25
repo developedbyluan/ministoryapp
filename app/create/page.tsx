@@ -10,18 +10,8 @@ export default function TranscriptionEditorPage() {
   const [transcriptions, setTranscriptions] = React.useState<string[]>([]);
 
   React.useEffect(() => {
-    const result: {
-      text: string;
-      ipa: string;
-      transcription: string;
-    }[] = [];
-
-    transcriptions.forEach((item) => {
-      const [text, ipa, transcription] = item.split("\n");
-      result.push({ text, ipa, transcription });
-    });
-    console.log(result);
-    localStorage.setItem("transcriptions", JSON.stringify(result));
+    if (transcriptions.length <= 0) return;
+    localStorage.setItem("transcriptions", JSON.stringify(transcriptions));
   }, [transcriptions]);
 
   function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
@@ -38,6 +28,10 @@ export default function TranscriptionEditorPage() {
       reader.readAsText(file);
     }
 
+    const localTranscriptions = localStorage.getItem("transcriptions");
+    if (localTranscriptions) {
+      setTranscriptions(JSON.parse(localTranscriptions));
+    }
   }
 
   function logLine(index: number) {
