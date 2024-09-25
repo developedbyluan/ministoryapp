@@ -20,6 +20,8 @@ export default function TranscriptionEditorPage() {
 
   const audioRef = React.useRef<HTMLAudioElement | null>(null);
   const lastElementOfTranscriptions = React.useRef<HTMLDivElement | null>(null);
+  const audioFileInputRef = React.useRef<HTMLInputElement | null>(null);
+  const txtFileInputRef = React.useRef<HTMLInputElement | null>(null);
 
   React.useEffect(() => {
     if (transcriptions.length <= 0) return;
@@ -185,7 +187,7 @@ export default function TranscriptionEditorPage() {
     return (
       <div key={crypto.randomUUID()} ref={refCallback}>
         <div className="flex flex-wrap gap-x-4">{lineElements}</div>
-        <p className="text-sm text-muted-foreground flex gap-7"> 
+        <div className="text-sm text-muted-foreground flex gap-7">
           {translation}
           {index === transcriptions.length - 1 && (
             <div className="flex gap-7">
@@ -205,10 +207,12 @@ export default function TranscriptionEditorPage() {
               </Button>
             </div>
           )}
-        </p>
-        <span className="text-xs bg-neutral-900/20 text-neutral-50 p-1 rounded"> 
-          {timestamps[index]}
-        </span>
+        </div>
+        {timestamps.length > 0 && (
+          <span className="text-xs bg-neutral-900/20 text-neutral-50 p-1 rounded">
+            {timestamps[index]}
+          </span>
+        )}
       </div>
     );
   });
@@ -230,7 +234,7 @@ export default function TranscriptionEditorPage() {
     return (
       <div key={crypto.randomUUID()}>
         <div className="flex flex-wrap gap-x-4">{lineElements}</div>
-        <p className="text-sm text-muted-foreground flex gap-7">
+        <div className="text-sm text-muted-foreground flex gap-7">
           {translation}{" "}
           {index === 0 && (
             <div className="flex gap-7">
@@ -248,7 +252,7 @@ export default function TranscriptionEditorPage() {
               </Button>
             </div>
           )}
-        </p>
+        </div>
       </div>
     );
   });
@@ -256,10 +260,30 @@ export default function TranscriptionEditorPage() {
   return (
     <div className="flex flex-col gap-7 items-start p-4">
       {!isSynced ? (
-        <div className="flex justify-between mx-auto">
-          <Input type="file" accept=".txt" onChange={handleFileUpload} />
+        <div className="flex justify-between mx-auto gap-4">
           <div>
-            <Input type="file" accept=".mp3" onChange={handleMP3Upload} />
+            <Input
+              ref={txtFileInputRef}
+              type="file"
+              accept=".txt"
+              className="hidden"
+              onChange={handleFileUpload}
+            />
+            <Button onClick={() => txtFileInputRef.current?.click()}>
+              Upload TXT
+            </Button>
+          </div>
+          <div>
+            <Input
+              ref={audioFileInputRef}
+              type="file"
+              accept=".mp3"
+              className="hidden"
+              onChange={handleMP3Upload}
+            />
+            <Button onClick={() => audioFileInputRef.current?.click()}>
+              Upload MP3
+            </Button>
           </div>
         </div>
       ) : (
