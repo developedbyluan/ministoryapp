@@ -19,6 +19,7 @@ export default function TranscriptionEditorPage() {
 
   const audioRef = React.useRef<HTMLAudioElement | null>(null);
 
+
   React.useEffect(() => {
     if (transcriptions.length <= 0) return;
     localStorage.setItem("transcriptions", JSON.stringify(transcriptions));
@@ -131,6 +132,10 @@ export default function TranscriptionEditorPage() {
     }
   }
 
+  function restart() {
+    window.location.reload();
+  }
+
   const transcriptionElements = transcriptions.map((transcription, index) => {
     const [text, ipa, translation] = transcription.split("\n");
     const ipaArray = ipa.split(" ");
@@ -217,7 +222,7 @@ export default function TranscriptionEditorPage() {
         </div>
       ) : (
         <div className="fixed bottom-4 right-4 flex flex-col gap-4">
-          <Button>Restart</Button>
+          <Button onClick={restart}>Restart</Button>
           <Button>Export JSON</Button>
         </div>
       )}
