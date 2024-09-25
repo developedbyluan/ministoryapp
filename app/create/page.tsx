@@ -147,7 +147,7 @@ export default function TranscriptionEditorPage() {
     window.location.reload();
   }
 
-  function handlePlaybackRateChange(){
+  function handlePlaybackRateChange() {
     if (!audioRef.current) return;
 
     const newRate = playbackRate > 1.25 ? 0.75 : playbackRate + 0.25;
@@ -160,7 +160,7 @@ export default function TranscriptionEditorPage() {
     if (!audioRef.current) return;
     audioRef.current.playbackRate = 1;
     setPlaybackRate(1);
-  } 
+  }
 
   const transcriptionElements = transcriptions.map((transcription, index) => {
     const [text, ipa, translation] = transcription.split("\n");
@@ -206,6 +206,9 @@ export default function TranscriptionEditorPage() {
             </>
           )}
         </p>
+        <span className="text-xs bg-neutral-900 text-neutral-50 p-1 rounded"> 
+          {timestamps[index]}
+        </span>
       </div>
     );
   });
@@ -217,10 +220,7 @@ export default function TranscriptionEditorPage() {
 
     const lineElements = ipaArray.map((ipa, index) => {
       return (
-        <div
-          className="flex flex-col text-center"
-          key={crypto.randomUUID()}
-        >
+        <div className="flex flex-col text-center" key={crypto.randomUUID()}>
           <p className="text-sm text-muted-foreground">{ipa}</p>
           <p className="text-xl">{textArray[index]}</p>
         </div>
