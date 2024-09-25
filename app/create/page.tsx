@@ -44,6 +44,10 @@ export default function TranscriptionEditorPage() {
     setBlocks((prev) => [transcriptions[index], ...prev]);
   }
 
+  function syncTranscriptions() {
+    setBlocks(blocks.filter((block) => !transcriptions.includes(block)));
+  }
+
   const transcriptionElements = transcriptions.map((transcription, index) => {
     return (
       <div key={crypto.randomUUID()}>
@@ -81,11 +85,14 @@ export default function TranscriptionEditorPage() {
   return (
     <div className="flex flex-col gap-7 items-start p-4">
       <Input type="file" accept=".txt" onChange={handleFileUpload} />
-      <div className="flex flex-col gap-7 items-start py-7">
-        {transcriptionElements}
-      </div>
-      <div className="flex flex-col gap-7 items-start py-7">
-        {blockElements}
+      <Button onClick={syncTranscriptions}>Sync</Button>
+      <div className="flex gap-4">
+        <div className="flex flex-col gap-7 items-start py-7 w-full">
+          {transcriptionElements}
+        </div>
+        <div className="flex flex-col gap-7 items-start py-7 w-full">
+          {blockElements}
+        </div>
       </div>
     </div>
   );
