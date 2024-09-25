@@ -42,6 +42,10 @@ export default function TranscriptionEditorPage() {
 
       reader.readAsText(file);
     }
+    const localTranscriptions = localStorage.getItem("transcriptions");
+    if (localTranscriptions) {
+      setTranscriptions(JSON.parse(localTranscriptions));
+    }
   }
 
   function handleMP3Upload(e: React.ChangeEvent<HTMLInputElement>) {
