@@ -207,7 +207,7 @@ export default function TranscriptionEditorPage() {
 
   return (
     <div className="flex flex-col gap-7 items-start p-4">
-      {!isSynced && (
+      {!isSynced ? (
         <div className="flex justify-between mx-auto">
           <Input type="file" accept=".txt" onChange={handleFileUpload} />
           <div>
@@ -215,9 +215,14 @@ export default function TranscriptionEditorPage() {
             {audioUrl && <audio ref={audioRef} src={audioUrl} />}
           </div>
         </div>
+      ) : (
+        <div className="fixed bottom-4 right-4 flex flex-col gap-4">
+          <Button>Restart</Button>
+          <Button>Export JSON</Button>
+        </div>
       )}
 
-      <div className="flex flex-col gap-7 items-start py-7">
+      <div className="flex flex-col gap-7 items-start py-7 mt-10">
         {transcriptionElements}
       </div>
       {blocks.length > 0 && audioFile && (
