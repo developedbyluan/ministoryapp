@@ -13,6 +13,8 @@ export default function TranscriptionEditorPage() {
 
   const [isLogging, setIsLogging] = React.useState(false);
 
+  const [timestamps, setTimestamps] = React.useState<number[]>([]);
+
   const audioRef = React.useRef<HTMLAudioElement | null>(null);
 
   React.useEffect(() => {
@@ -32,6 +34,12 @@ export default function TranscriptionEditorPage() {
       }
     };
   }, [audioFile]);
+
+  React.useEffect(() => {
+    if (timestamps.length <= 0) return;
+    console.log(timestamps);
+    localStorage.setItem("timestamps", JSON.stringify(timestamps));
+  }, [timestamps]);
 
   function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -77,10 +85,12 @@ export default function TranscriptionEditorPage() {
     setTranscriptions((prev) => [...prev, blocks[index]]);
     setBlocks((prev) => prev.filter((_, i) => i !== index));
     setIsLogging(false);
+    setTimestamps((prev) => [...prev, audioRef.current?.currentTime as number]);
   }
 
   function removeLine(index: number) {
     setTranscriptions((prev) => prev.filter((_, i) => i !== index));
+    setTimestamps((prev) => prev.filter((_, i) => i !== index));
     setBlocks((prev) => [transcriptions[index], ...prev]);
   }
 
