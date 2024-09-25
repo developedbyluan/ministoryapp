@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 export default function TranscriptionEditorPage() {
   const [blocks, setBlocks] = React.useState<string[]>([]);
   const [transcriptions, setTranscriptions] = React.useState<string[]>([]);
+  const [audioFile, setAudioFile] = React.useState<File | null>(null);
 
   React.useEffect(() => {
     if (transcriptions.length <= 0) return;
@@ -27,10 +28,12 @@ export default function TranscriptionEditorPage() {
 
       reader.readAsText(file);
     }
+  }
 
-    const localTranscriptions = localStorage.getItem("transcriptions");
-    if (localTranscriptions) {
-      setTranscriptions(JSON.parse(localTranscriptions));
+  function handleMP3Upload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (file) {
+      setAudioFile(file);
     }
   }
 
@@ -108,6 +111,10 @@ export default function TranscriptionEditorPage() {
       </div>
       <div className="fixed top-4 right-4">
         <Button onClick={syncTranscriptions}>Sync</Button>
+      </div>
+      <div>
+        <Input type="file" accept=".mp3" onChange={handleMP3Upload} />
+        {audioFile && <audio src={URL.createObjectURL(audioFile)} controls />}
       </div>
       <div className="flex flex-col gap-7 items-start py-7">
         {blockElements}
