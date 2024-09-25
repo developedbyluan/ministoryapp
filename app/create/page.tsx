@@ -116,7 +116,7 @@ export default function TranscriptionEditorPage() {
     setTranscriptions((prev) => prev.filter((_, i) => i !== index));
     setTimestamps((prev) => prev.filter((_, i) => i !== index));
     setBlocks((prev) => [transcriptions[index], ...prev]);
-    pauseAudioAtTimestamp(timestamps[index - 1]);
+    pauseAudioAtTimestamp(timestamps[index - 1] || 0);
   }
 
   function syncTranscriptions() {
