@@ -217,7 +217,6 @@ export default function TranscriptionEditorPage() {
           <Input type="file" accept=".txt" onChange={handleFileUpload} />
           <div>
             <Input type="file" accept=".mp3" onChange={handleMP3Upload} />
-            {audioUrl && <audio ref={audioRef} src={audioUrl} />}
           </div>
         </div>
       ) : (
@@ -246,6 +245,7 @@ export default function TranscriptionEditorPage() {
       )}
       <div className="border border-neutral-200 w-full"></div>
       <div className="flex flex-col gap-7 items-start py-7">
+        {audioUrl && <audio ref={audioRef} src={audioUrl} />}
         {blockElements}
       </div>
     </div>
