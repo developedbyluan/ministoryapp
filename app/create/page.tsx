@@ -65,10 +65,12 @@ export default function TranscriptionEditorPage() {
     return (
       <div key={crypto.randomUUID()}>
         <div className="flex flex-wrap gap-x-4">{lineElements}</div>
-        <p className="text-sm text-muted-foreground">{translation}</p>
-        {index === transcriptions.length - 1 && (
-          <Button onClick={() => removeLine(index)}>Remove</Button>
-        )}
+        <p className="text-sm text-muted-foreground">
+          {translation}
+          {index === transcriptions.length - 1 && (
+            <Button onClick={() => removeLine(index)}>Remove</Button>
+          )}
+        </p>
       </div>
     );
   });
@@ -90,8 +92,10 @@ export default function TranscriptionEditorPage() {
     return (
       <div key={crypto.randomUUID()}>
         <div className="flex flex-wrap gap-x-4">{lineElements}</div>
-        <p className="text-sm text-muted-foreground">{translation}</p>
-        {index === 0 && <Button onClick={() => logLine(index)}>Log</Button>}
+        <p className="text-sm text-muted-foreground">
+          {translation}{" "}
+          {index === 0 && <Button onClick={() => logLine(index)}>Log</Button>}
+        </p>
       </div>
     );
   });
