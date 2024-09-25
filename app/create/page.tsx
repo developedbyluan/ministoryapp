@@ -88,6 +88,18 @@ export default function TranscriptionEditorPage() {
     audioRef.current.pause();
   }
 
+  function playAudioInRange(start: number, end: number) {
+    if (!audioRef.current) return;
+    audioRef.current.currentTime = start;
+    audioRef.current.play();
+    const timeout = (end - start) * 1000;
+    setTimeout(() => {
+      audioRef.current?.pause();
+      audioRef.current!.currentTime = end;
+    }, timeout);
+    setIsLogging(false);
+  }
+
   function logLine(index: number) {
     playPauseAudio();
     if (!isLogging) {
@@ -136,7 +148,19 @@ export default function TranscriptionEditorPage() {
         <p className="text-sm text-muted-foreground">
           {translation}
           {index === transcriptions.length - 1 && (
-            <Button onClick={() => removeLine(index)}>Remove</Button>
+            <>
+              <Button onClick={() => removeLine(index)}>Remove</Button>
+              <Button
+                onClick={() =>
+                  playAudioInRange(
+                    timestamps[index - 1] || 0,
+                    timestamps[index] || 0
+                    )
+                }
+              >
+                Replay
+              </Button>
+            </>
           )}
         </p>
       </div>
