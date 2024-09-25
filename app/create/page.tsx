@@ -207,7 +207,16 @@ export default function TranscriptionEditorPage() {
 
   return (
     <div className="flex flex-col gap-7 items-start p-4">
-      <Input type="file" accept=".txt" onChange={handleFileUpload} />
+      {!isSynced && (
+        <div className="flex justify-between mx-auto">
+          <Input type="file" accept=".txt" onChange={handleFileUpload} />
+          <div>
+            <Input type="file" accept=".mp3" onChange={handleMP3Upload} />
+            {audioUrl && <audio ref={audioRef} src={audioUrl} />}
+          </div>
+        </div>
+      )}
+
       <div className="flex flex-col gap-7 items-start py-7">
         {transcriptionElements}
       </div>
@@ -225,10 +234,6 @@ export default function TranscriptionEditorPage() {
           </Button>
         </div>
       )}
-      <div>
-        <Input type="file" accept=".mp3" onChange={handleMP3Upload} />
-        {audioUrl && <audio ref={audioRef} src={audioUrl} />}
-      </div>
       <div className="flex flex-col gap-7 items-start py-7">
         {blockElements}
       </div>
