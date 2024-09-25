@@ -32,7 +32,7 @@ export default function TranscriptionEditorPage() {
 
   function removeLine(index: number) {
     setTranscriptions((prev) => prev.filter((_, i) => i !== index));
-    setBlocks((prev) => [...prev, blocks[index]]);
+    setBlocks((prev) => [transcriptions[index], ...prev]);
   }
 
   return (
