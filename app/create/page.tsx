@@ -49,9 +49,23 @@ export default function TranscriptionEditorPage() {
   }
 
   const transcriptionElements = transcriptions.map((transcription, index) => {
+    const [text, ipa, translation] = transcription.split("\n");
+    const ipaArray = ipa.split(" ");
+    const textArray = text.split(" ");
+
+    const lineElements = ipaArray.map((ipa, index) => {
+      return (
+        <div className="flex flex-col text-center" key={crypto.randomUUID()}>
+          <p className="text-sm text-muted-foreground">{ipa}</p>
+          <p className="text-xl">{textArray[index]}</p>
+        </div>
+      );
+    });
+
     return (
       <div key={crypto.randomUUID()}>
-        <p>{transcription}</p>
+        <div className="flex flex-wrap gap-x-4">{lineElements}</div>
+        <p className="text-sm text-muted-foreground">{translation}</p>
         {index === transcriptions.length - 1 && (
           <Button onClick={() => removeLine(index)}>Remove</Button>
         )}
