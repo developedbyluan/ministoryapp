@@ -81,6 +81,13 @@ export default function TranscriptionEditorPage() {
     }
   }
 
+  function pauseAudioAtTimestamp(timestamp: number) {
+    if (!audioRef.current) return;
+    audioRef.current.currentTime = timestamp;
+    setIsLogging(false);
+    audioRef.current.pause();
+  }
+
   function logLine(index: number) {
     playPauseAudio();
     if (!isLogging) {
@@ -97,6 +104,7 @@ export default function TranscriptionEditorPage() {
     setTranscriptions((prev) => prev.filter((_, i) => i !== index));
     setTimestamps((prev) => prev.filter((_, i) => i !== index));
     setBlocks((prev) => [transcriptions[index], ...prev]);
+    pauseAudioAtTimestamp(timestamps[index - 1]);
   }
 
   function syncTranscriptions() {
