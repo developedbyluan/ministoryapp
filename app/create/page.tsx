@@ -89,18 +89,6 @@ export default function TranscriptionEditorPage() {
     audioRef.current.pause();
   }
 
-  function playAudioInRange(start: number, end: number) {
-    if (!audioRef.current) return;
-    audioRef.current.currentTime = start;
-    audioRef.current.play();
-    const timeout = (end - start) * 1000;
-    setTimeout(() => {
-      audioRef.current?.pause();
-      audioRef.current!.currentTime = end;
-    }, timeout);
-    setIsLogging(false);
-  }
-
   function replayLine(start: number, end: number) {
     if (!audioRef.current) return;
     setIsReplaying(true);
@@ -173,7 +161,7 @@ export default function TranscriptionEditorPage() {
                 onClick={() =>
                   replayLine(timestamps[index - 1] || 0, timestamps[index] || 0)
                 }
-                disabled={isLogging}
+                disabled={isLogging || isReplaying}
               >
                 Replay
               </Button>
