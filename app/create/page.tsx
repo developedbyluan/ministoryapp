@@ -239,6 +239,7 @@ export default function TranscriptionEditorPage() {
           </Button>
         </div>
       )}
+      <div className="border border-neutral-200 w-full"></div>
       <div className="flex flex-col gap-7 items-start py-7">
         {blockElements}
       </div>
