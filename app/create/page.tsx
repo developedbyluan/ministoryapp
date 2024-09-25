@@ -149,14 +149,17 @@ export default function TranscriptionEditorPage() {
           {translation}
           {index === transcriptions.length - 1 && (
             <>
-              <Button onClick={() => removeLine(index)}>Remove</Button>
+              <Button onClick={() => removeLine(index)} disabled={isLogging}>
+                Remove
+              </Button>
               <Button
                 onClick={() =>
                   playAudioInRange(
                     timestamps[index - 1] || 0,
                     timestamps[index] || 0
-                    )
+                  )
                 }
+                disabled={isLogging}
               >
                 Replay
               </Button>
