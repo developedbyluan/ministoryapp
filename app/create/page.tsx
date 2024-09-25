@@ -18,6 +18,7 @@ export default function TranscriptionEditorPage() {
   const [timestamps, setTimestamps] = React.useState<number[]>([]);
 
   const audioRef = React.useRef<HTMLAudioElement | null>(null);
+  const firstElementOfBlocksRef = React.useRef<HTMLDivElement | null>(null);
 
 
   React.useEffect(() => {
@@ -43,6 +44,15 @@ export default function TranscriptionEditorPage() {
     console.log(timestamps);
     localStorage.setItem("timestamps", JSON.stringify(timestamps));
   }, [timestamps]);
+
+  React.useEffect(() => {
+    if (!firstElementOfBlocksRef.current) return;
+    if (!isSynced) return
+    firstElementOfBlocksRef.current.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  }, [blocks, isSynced]);
 
   function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -184,8 +194,17 @@ export default function TranscriptionEditorPage() {
     const textArray = text.split(" ");
 
     const lineElements = ipaArray.map((ipa, index) => {
+      function refCallback(el: HTMLDivElement) {
+        if (index === 0) {
+          firstElementOfBlocksRef.current = el;
+        }
+      }
       return (
-        <div className="flex flex-col text-center" key={crypto.randomUUID()}>
+        <div
+          className="flex flex-col text-center"
+          key={crypto.randomUUID()}
+          ref={refCallback}
+        >
           <p className="text-sm text-muted-foreground">{ipa}</p>
           <p className="text-xl">{textArray[index]}</p>
         </div>
@@ -226,7 +245,7 @@ export default function TranscriptionEditorPage() {
         </div>
       )}
 
-      <div className="flex flex-col gap-7 items-start py-7 mt-10">
+      <div className="flex flex-col gap-7 items-start">
         {transcriptionElements}
       </div>
       {blocks.length > 0 && audioFile && (
