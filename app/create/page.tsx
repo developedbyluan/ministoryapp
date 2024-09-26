@@ -199,13 +199,14 @@ export default function TranscriptionEditorPage() {
         };
       }
     );
+    const audioFileName = audioFile?.name.split(".")[0].toLowerCase().replace(/\s+/g, "-");
     const blob = new Blob([JSON.stringify(transcriptionObjectsArray)], {
       type: "application/json",
     });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = "transcriptions.json";
+    a.download = `${audioFileName}.json`;
     a.click();
     setIsExporting(true);
   }
