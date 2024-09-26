@@ -30,18 +30,30 @@ export default function TranscriptionEditorPage() {
     localStorage.setItem("transcriptions", JSON.stringify(transcriptions));
   }, [transcriptions]);
 
-  React.useEffect(() => {
+  // React.useEffect(() => {
+  //   if (audioFile) {
+  //     setAudioUrl(URL.createObjectURL(audioFile));
+  //   }
+
+  //   // Clean up the URL when the audio file changes
+  //   return () => {
+  //     if (audioUrl) {
+  //       URL.revokeObjectURL(audioUrl);
+  //     }
+  //   };
+  // }, [audioFile]);
+
+  React.useMemo(() => {
     if (audioFile) {
       setAudioUrl(URL.createObjectURL(audioFile));
     }
+  }, [audioFile]);
 
-    // Clean up the URL when the audio file changes
-    return () => {
-      if (audioUrl) {
-        URL.revokeObjectURL(audioUrl);
-      }
-    };
-  }, [audioFile, audioUrl]);
+  React.useEffect(() => {
+    if (audioUrl) {
+      URL.revokeObjectURL(audioUrl);
+    }
+  }, [audioUrl]);
 
   React.useEffect(() => {
     if (timestamps.length <= 0) return;
