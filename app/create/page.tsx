@@ -25,6 +25,8 @@ export default function TranscriptionEditorPage() {
   const audioFileInputRef = React.useRef<HTMLInputElement | null>(null);
   const txtFileInputRef = React.useRef<HTMLInputElement | null>(null);
 
+  const [isExporting, setIsExporting] = React.useState(false);
+
   React.useEffect(() => {
     if (transcriptions.length <= 0) return;
     localStorage.setItem("transcriptions", JSON.stringify(transcriptions));
@@ -50,10 +52,12 @@ export default function TranscriptionEditorPage() {
   }, [audioFile]);
 
   React.useEffect(() => {
+    if (!isExporting) return;
     if (audioUrl) {
       URL.revokeObjectURL(audioUrl);
+      restart();
     }
-  }, [audioUrl]);
+  }, [audioUrl, isExporting]);
 
   React.useEffect(() => {
     if (timestamps.length <= 0) return;
@@ -216,6 +220,7 @@ export default function TranscriptionEditorPage() {
     a.href = url;
     a.download = "transcriptions.json";
     a.click();
+    setIsExporting(true);
   }
 
   const transcriptionElements = transcriptions.map((transcription, index) => {
