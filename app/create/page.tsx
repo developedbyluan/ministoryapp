@@ -41,7 +41,7 @@ export default function TranscriptionEditorPage() {
         URL.revokeObjectURL(audioUrl);
       }
     };
-  }, [audioFile]);
+  }, [audioFile, audioUrl]);
 
   React.useEffect(() => {
     if (timestamps.length <= 0) return;
@@ -141,15 +141,17 @@ export default function TranscriptionEditorPage() {
   }
 
   function syncTranscriptions() {
-    setBlocks(blocks.filter((block) => {
-      const clonedTranscriptions = JSON.parse(JSON.stringify(transcriptions))
-      const transcriptionsWithoutLineBreaks = clonedTranscriptions.map(
-        (transcription: string) => transcription.replaceAll("\n", "")
-      );
-      return !transcriptionsWithoutLineBreaks.includes(
-        block.replaceAll("\n", "")
-      );
-    }));
+    setBlocks(
+      blocks.filter((block) => {
+        const clonedTranscriptions = JSON.parse(JSON.stringify(transcriptions));
+        const transcriptionsWithoutLineBreaks = clonedTranscriptions.map(
+          (transcription: string) => transcription.replaceAll("\n", "")
+        );
+        return !transcriptionsWithoutLineBreaks.includes(
+          block.replaceAll("\n", "")
+        );
+      })
+    );
     setIsSynced(true);
 
     if (audioRef.current && timestamps.length > 0) {
@@ -174,6 +176,34 @@ export default function TranscriptionEditorPage() {
     if (!audioRef.current) return;
     audioRef.current.playbackRate = 1;
     setPlaybackRate(1);
+  }
+
+  function exportJSON() {
+    const transcriptionObjectsArray = transcriptions.map(
+      (transcription: string, index: number) => {
+        const [text, ipa, translation, type, imgAlt] =
+          transcription.split("\n");
+        const [imgUrl, alt] = imgAlt.split("&&");
+        return {
+          text,
+          ipa,
+          translation,
+          type,
+          imgUrl: imgUrl.trim(),
+          alt: alt.trim(),
+          start: timestamps[index - 1] || 0,
+          end: timestamps[index],
+        };
+      }
+    );
+    const blob = new Blob([JSON.stringify(transcriptionObjectsArray)], {
+      type: "application/json",
+    });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "transcriptions.json";
+    a.click();
   }
 
   const transcriptionElements = transcriptions.map((transcription, index) => {
@@ -302,7 +332,7 @@ export default function TranscriptionEditorPage() {
       ) : (
         <div className="fixed bottom-4 right-4 flex flex-col gap-4">
           <Button onClick={restart}>Restart</Button>
-          <Button>Export JSON</Button>
+          <Button onClick={exportJSON}>Export JSON</Button>
         </div>
       )}
 
