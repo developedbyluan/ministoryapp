@@ -45,7 +45,6 @@ export default function TranscriptionEditorPage() {
 
   React.useEffect(() => {
     if (timestamps.length <= 0) return;
-    console.log(timestamps);
     localStorage.setItem("timestamps", JSON.stringify(timestamps));
   }, [timestamps]);
 
@@ -61,7 +60,6 @@ export default function TranscriptionEditorPage() {
   function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (file) {
-      console.log(file);
       const reader = new FileReader();
 
       reader.onload = (e) => {
@@ -143,7 +141,15 @@ export default function TranscriptionEditorPage() {
   }
 
   function syncTranscriptions() {
-    setBlocks(blocks.filter((block) => !transcriptions.includes(block)));
+    setBlocks(blocks.filter((block) => {
+      const clonedTranscriptions = JSON.parse(JSON.stringify(transcriptions))
+      const transcriptionsWithoutLineBreaks = clonedTranscriptions.map(
+        (transcription: string) => transcription.replaceAll("\n", "")
+      );
+      return !transcriptionsWithoutLineBreaks.includes(
+        block.replaceAll("\n", "")
+      );
+    }));
     setIsSynced(true);
 
     if (audioRef.current && timestamps.length > 0) {
