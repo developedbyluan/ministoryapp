@@ -7,14 +7,15 @@ import Link from "next/link";
 export default function HomePage() {
   const router = useRouter();
   const STORAGE_KEY = "preferredLanguage";
-  const languages = [
-    { id: "english", name: "English", route: "/english" },
-    { id: "chinese", name: "Chinese", route: "/chinese" },
-    { id: "spanish", name: "Spanish", route: "/spanish" },
-    { id: "arabic", name: "Arabic", route: "/arabic" },
-  ];
 
   React.useEffect(() => {
+    const languages = [
+      { id: "english", name: "English", route: "/english" },
+      { id: "chinese", name: "Chinese", route: "/chinese" },
+      { id: "spanish", name: "Spanish", route: "/spanish" },
+      { id: "arabic", name: "Arabic", route: "/arabic" },
+    ];
+
     const preferredLanguage = localStorage.getItem(STORAGE_KEY);
 
     if (!preferredLanguage) return;
@@ -25,7 +26,7 @@ export default function HomePage() {
         router.push(language.route);
       }
     }
-  }, []);
+  }, [router]);
   return (
     <div>
       <h1>Choose Language</h1>
